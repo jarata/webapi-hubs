@@ -88,6 +88,28 @@ server.delete('/hubs/:id', (req, res) => {
         })
 });
 
+server.get('/hubs/:id', (req, res) => {
+    // const {id} = req.params;
+    database.hubs
+        .findById(req.params.id)
+        .then(hubs => {
+            if (hubs) {
+                res.status(200).json({ success: true, hubs })
+            } else {
+                res.status(404).json({
+                    success: false,
+                    message: "Cannot find that id"
+                })
+            }
+        })
+        .catch(({ code, message }) => {
+            res.status(200).json({
+                success: false,
+                message,
+            })
+        })
+});
+
 server.listen(4000, () =>
     console.log('Server running on http://localhost:4000')
 );
